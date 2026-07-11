@@ -1,0 +1,49 @@
+function countPyLines() {
+  files="$(find src/ | grep -F ".py" | grep -v "__pycache__")"
+  sum=0
+  for file in $files; do
+    num=$(cat $file | wc -l)
+    sum=$(( sum + num ))
+    printf "%'6d: %s\n" "$num" "$file"
+  done
+  printf "\n\tTotal: %'d\n\n" "$sum" 
+}
+
+function getCommitsSinceLastTag() {
+  git --no-pager log $(git describe --tags --abbrev=0)..HEAD --oneline
+}
+
+function pdfConcat() {
+  if ! pdfunite; then
+    sudo apt install -y pdfunite || sudo dnf install -y pdfunite
+  fi
+  if [[ "$1" ]]; then
+    dir="$1"
+  else
+    dir="$(pwd)"
+  fi
+  starting_dir="$(pwd)"
+  cd $dir
+  csl=""
+  count="$(ll | wc -l)"
+  for (( i=1; i<$count; i++ )); do
+    csl="$csl ${i}.pdf"
+  done
+  pdfunite $csl complete.pdf
+  cd "$starting_dir"
+}
+
+function runPrecommitTests() {
+  pre-commit run --all-files
+  pre-commit run --all-files --hook-stage pre-push
+}
+
+function setLinuxPermissions() {
+  if [[ "$1" ]]; then
+    dir="$1"
+  else
+    dir="$(pwd)"
+  fi
+  sudo find "$dir" -type d -exec chmod 755 {} +
+  sudo find "$dir" -type f -exec chmod 644 {} +
+}

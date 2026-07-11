@@ -1,0 +1,18 @@
+# Start in last dir
+if [ -f ~/.last_dir ]; then
+  cd "$(cat ~/.last_dir)" || cd "~"
+fi
+
+# Handle Bash History
+export PROMPT_COMMAND="$PROMPT_COMMAND; history -a; history -n"
+export HISTSIZE=999999999
+export HISTFILESIZE=999999999
+shopt -s histappend
+trap "history -a" EXIT
+
+# Handle LS COLORS
+export LS_COLORS="di=35:ln=36:*.sh=32"
+
+# Some Linux gaming silliness
+export STEAM_COMPAT_DATA_PATH="$HOME/.steam/steam/steamapps/compatdata/2790569475"
+export WINEPREFIX="$STEAM_COMPAT_DATA_PATH/pfx"

@@ -1,0 +1,70 @@
+function treePython() {
+  if [[ -n "$1" ]]; then
+    dir="$1"
+  else
+    dir="."
+  fi
+  tree \
+    -I "__pycache__" \
+    -I "__init__.py" \
+    -I "build" \
+    -I "*.egg-info" \
+    "$dir"
+}
+
+function findAndReplace() {
+  before="$1"
+  after="$2"
+  if [[ "$3" ]]; then
+    dir="$3"
+  else
+    dir="$(pwd)"
+  fi
+  find "$dir" -type d \( -name ".git" -o -name "node_modules" -o -name "artifacts" -o -name "__pycache__" \) -prune -o -type f -print |
+    while read -r file; do
+      sedIfChanged "$before" "$after" "$file"
+    done
+}
+
+function getPipLatest() {
+  package="$1"
+  if [[ ! "$package" ]]; then
+    echo -e "\n\tArg1 = package_name"
+    exit 1
+  fi
+  if [[ -f "./.venv/bin/pip3.13" ]]; then
+    pip="./.venv/bin/pip3.13"
+  else
+    pip="pip"
+  fi
+  latest_version="$($pip index versions "$package" | grep "Available versions" | awk '{print $3}' | tr -d ",")"
+  echo -e "\t\"$package==$latest_version\","
+}
+
+function gitTag () (
+  set -euo pipefail
+  tag="$1"
+  project_name="$(basename $(pwd))"
+  local_image="${project_name}:${tag}"
+  remote_image="ghcr.io/coreymerritt/${project_name}:${tag}"
+  if ! docker system info | grep -i username; then
+    if [[ -n "$GITHUB_PAT" ]]; then
+      echo "$GITHUB_PAT" | docker login ghcr.io -u coreyMerritt --password-stdin
+    else
+      echo -e "\n\tLog into docker and try again...\n"
+      exit 1
+    fi
+  fi
+  git tag "$tag" || {
+    echo -e "\n\tgit tag -d $tag && git push origin --delete $tag\n"
+    exit 1
+  }
+  git push --tags
+  docker build -t "$local_image" .
+  docker tag "$local_image" "$remote_image"
+  docker push "$remote_image"
+  echo
+  echo -e "\t Local Docker: $local_image"
+  echo -e "\tRemote Docker: $remote_image"
+  echo
+)

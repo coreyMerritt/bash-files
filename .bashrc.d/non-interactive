@@ -1,0 +1,12 @@
+case $- in
+  *i*) ;;
+  *) return ;;
+esac
+
+# Some terminal output behavior
+shopt -s direxpand
+bind 'set show-all-if-ambiguous on'
+bind 'set completion-display-width 0'
+bind 'set completion-ignore-case on'
+bind 'set page-completions off'
+bind 'set print-completions-horizontally off'

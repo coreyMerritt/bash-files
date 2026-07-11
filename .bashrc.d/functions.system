@@ -1,0 +1,9 @@
+function sedIfChanged() {
+  before="$1"
+  after="$2"
+  file_path="$3"
+  tmp=$(mktemp)
+  sed "s|$before|$after|g" "$file_path" > "$tmp"
+  cmp -s "$file_path" "$tmp" || mv "$tmp" "$file_path"
+  rm -f "$tmp"
+}

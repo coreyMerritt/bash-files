@@ -1,0 +1,23 @@
+# ~/.op.env.tpl
+
+# General
+GENERAL_USER=op://Personal/General Password/username
+GENERAL_PASS=op://Personal/General Password/password
+GENERAL_LOW_RISK_PASS=op://Personal/General Password/low-risk-password
+
+# Keys & Tokens
+AWS_ACCESS_KEY_ID=op://Personal/AWS CLI Key/username
+AWS_SECRET_ACCESS_KEY=op://Personal/AWS CLI Key/password
+GITHUB_PAT=op://GitHub Token/credential
+
+# Git Privacy
+export GIT_PRIVACY_START_HOUR=2
+export GIT_PRIVACY_END_HOUR=17
+export GIT_PRIVACY_PREPUSH_MIN_HOUR=2
+export GIT_PRIVACY_PREPUSH_MAX_HOUR=17
+export GIT_PRIVACY_MIN_DIFF_MINS=1
+export GIT_PRIVACY_MAX_DIFF_MINS=10
+
+# Misc
+export EDITOR="vim"
+export PROMPT_COMMAND='echo "$PWD" > "$HOME/.last_dir"'

@@ -1,0 +1,40 @@
+BLUE="\[\033[38;2;0;0;255m\]"
+TEAL="\[\033[38;2;0;255;255m\]"
+YELLOW="\[\033[38;2;255;255;0m\]"
+RED="\[\033[38;2;255;0;0m\]"
+GREEN="\[\033[38;2;0;255;0m\]"
+PURPLE="\[\033[38;2;221;0;221m\]"
+ORANGE="\[\033[38;2;255;128;0m\]"
+PINK="\[\033[38;2;255;0;128m\]"
+WHITE="\[\033[0m\]"
+
+
+# Set hostname color based on hostname value
+case "$(hostname)" in
+  ukko-ukonvasara)
+    HOST_COLOR=$TEAL
+    ;;
+  ukko-development-pc)
+    HOST_COLOR=$TEAL
+    ;;
+  ukko-server-1)
+    HOST_COLOR=$YELLOW
+    ;;
+  ukko-server-2)
+    HOST_COLOR=$YELLOW
+    ;;
+  ukko-media-client-1)
+    HOST_COLOR=$GREEN
+    ;;
+  ukko-media-client-2)
+    HOST_COLOR=$GREEN
+    ;;
+  ukko-media-client-3)
+    HOST_COLOR=$GREEN
+    ;;
+  *)
+    HOST_COLOR=$WHITE
+    ;;
+esac
+
+export PS1="${WHITE}\u@${HOST_COLOR}\h${TEAL}:::${WHITE}\w${TEAL} >>>${WHITE}"

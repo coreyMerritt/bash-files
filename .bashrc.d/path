@@ -1,0 +1,7 @@
+if [[ ! "$PATH" =~ "/usr/local/bin" ]]; then
+  PATH="/usr/local/bin:${PATH}"
+fi
+if [[ ! "$PATH" =~ "${HOME}/.local/bin" ]]; then
+  PATH="${HOME}/.local/bin:${PATH}"
+fi
+export PATH
