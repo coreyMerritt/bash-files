@@ -6,9 +6,9 @@ GENERAL_PASS=op://Personal/General Password/password
 GENERAL_LOW_RISK_PASS=op://Personal/General Password/low-risk-password
 
 # Keys & Tokens
-AWS_ACCESS_KEY_ID=op://Personal/AWS CLI Key/username
-AWS_SECRET_ACCESS_KEY=op://Personal/AWS CLI Key/password
-GITHUB_PAT=op://Personal/GitHub Token/credential
+AWS_ACCESS_KEY_ID=op://personal-cli/aws/access-key-id
+AWS_SECRET_ACCESS_KEY=op://personal-cli/aws/secret-access-key
+GITHUB_PAT=op://personal-cli/github/token
 
 # Git Privacy
 export GIT_PRIVACY_SAFE_TIME_START="02:00:00"
