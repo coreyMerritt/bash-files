@@ -1,3 +1,7 @@
+function namespace() {
+  kubectl config set-context --current --namespace "$1"
+}
+
 function treePython() {
   if [[ -n "$1" ]]; then
     dir="$1"
