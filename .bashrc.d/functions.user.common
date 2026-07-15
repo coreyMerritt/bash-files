@@ -1,8 +1,58 @@
-function namespace() {
+function fnKubePodMetrics() {
+  local all_ns=false
+  if [[ "$1" == "-A" ]]; then
+    all_ns=true
+  fi
+
+  local ns=""
+  if ! $all_ns; then
+    ns=$(kubectl config view --minify -o jsonpath='{..namespace}')
+    ns="${ns:-default}"
+  fi
+
+  local to_mi() {
+    local val="$1"
+    if [[ "$val" == *Gi ]]; then
+      echo "$(echo "${val%Gi} * 1024" | bc)"
+    else
+      echo "${val%Mi}"
+    fi
+  }
+
+  if $all_ns; then
+    printf "%-15s %-45s %10s %10s %10s %8s %8s\n" "NAMESPACE" "NAME" "USAGE" "REQUEST" "LIMIT" "%REQ" "%LIMIT"
+    kubectl top pods -A --no-headers | while read -r namespace name cpu mem; do
+      local mem_num request limit request_mi limit_mi pct_req pct_limit
+      mem_num=$(echo "$mem" | sed 's/Mi//')
+      request=$(kubectl get pod "$name" -n "$namespace" -o jsonpath='{.spec.containers[0].resources.requests.memory}')
+      limit=$(kubectl get pod "$name" -n "$namespace" -o jsonpath='{.spec.containers[0].resources.limits.memory}')
+      request_mi=$(to_mi "$request")
+      limit_mi=$(to_mi "$limit")
+      pct_req=$([[ -n "$request_mi" ]] && echo "scale=1; $mem_num / $request_mi * 100" | bc || echo "n/a")
+      pct_limit=$([[ -n "$limit_mi" ]] && echo "scale=1; $mem_num / $limit_mi * 100" | bc || echo "n/a")
+      printf "%-15s %-45s %10s %10s %10s %7s%% %7s%%\n" "$namespace" "$name" "$mem" "${request:-none}" "${limit:-none}" "$pct_req" "$pct_limit"
+    done
+  else
+    printf "%-45s %10s %10s %10s %8s %8s\n" "NAME" "USAGE" "REQUEST" "LIMIT" "%REQ" "%LIMIT"
+    kubectl top pods -n "$ns" --no-headers | while read -r name cpu mem; do
+      local mem_num request limit request_mi limit_mi pct_req pct_limit
+      mem_num=$(echo "$mem" | sed 's/Mi//')
+      request=$(kubectl get pod "$name" -n "$ns" -o jsonpath='{.spec.containers[0].resources.requests.memory}')
+      limit=$(kubectl get pod "$name" -n "$ns" -o jsonpath='{.spec.containers[0].resources.limits.memory}')
+      request_mi=$(to_mi "$request")
+      limit_mi=$(to_mi "$limit")
+      pct_req=$([[ -n "$request_mi" ]] && echo "scale=1; $mem_num / $request_mi * 100" | bc || echo "n/a")
+      pct_limit=$([[ -n "$limit_mi" ]] && echo "scale=1; $mem_num / $limit_mi * 100" | bc || echo "n/a")
+      printf "%-45s %10s %10s %10s %7s%% %7s%%\n" "$name" "$mem" "${request:-none}" "${limit:-none}" "$pct_req" "$pct_limit"
+    done
+  fi
+}
+
+function fnNamespace() {
   kubectl config set-context --current --namespace "$1"
 }
 
-function treePython() {
+function fnTreePython() {
   if [[ -n "$1" ]]; then
     dir="$1"
   else
@@ -16,7 +66,7 @@ function treePython() {
     "$dir"
 }
 
-function findAndReplace() {
+function fnFindAndReplace() {
   before="$1"
   after="$2"
   if [[ "$3" ]]; then
@@ -30,7 +80,7 @@ function findAndReplace() {
     done
 }
 
-function getPipLatest() {
+function fnGetPipLatest() {
   package="$1"
   if [[ ! "$package" ]]; then
     echo -e "\n\tArg1 = package_name"
@@ -45,7 +95,7 @@ function getPipLatest() {
   echo -e "\t\"$package==$latest_version\","
 }
 
-function gitTag () (
+function fnGitTag () (
   set -euo pipefail
   tag="$1"
   project_name="$(basename $(pwd))"

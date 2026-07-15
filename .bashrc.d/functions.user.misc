@@ -1,4 +1,4 @@
-function countPyLines() {
+function fnCountPyLines() {
   files="$(find src/ | grep -F ".py" | grep -v "__pycache__")"
   sum=0
   for file in $files; do
@@ -9,11 +9,11 @@ function countPyLines() {
   printf "\n\tTotal: %'d\n\n" "$sum" 
 }
 
-function getCommitsSinceLastTag() {
+function fnGetCommitsSinceLastTag() {
   git --no-pager log $(git describe --tags --abbrev=0)..HEAD --oneline
 }
 
-function pdfConcat() {
+function fnPdfConcat() {
   if ! pdfunite; then
     sudo apt install -y pdfunite || sudo dnf install -y pdfunite
   fi
@@ -33,12 +33,12 @@ function pdfConcat() {
   cd "$starting_dir"
 }
 
-function runPrecommitTests() {
+function fnRunPrecommitTests() {
   pre-commit run --all-files
   pre-commit run --all-files --hook-stage pre-push
 }
 
-function setLinuxPermissions() {
+function fnSetLinuxPermissions() {
   if [[ "$1" ]]; then
     dir="$1"
   else
