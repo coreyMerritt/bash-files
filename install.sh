@@ -18,5 +18,8 @@ template_files="$(find -name *.template)"
 for template_file_path in $template_files; do
   clean_template_file_path="${template_file_path#./}"
   clean_template_file_path="$(echo $clean_template_file_path | sed 's|.template||g')"
-  op inject -i "$template_file_path" -o "${HOME}/${clean_template_file_path}"
+  op inject \
+    --force \
+    --in-file "$template_file_path" \
+    --out-file "${HOME}/${clean_template_file_path}"
 done
