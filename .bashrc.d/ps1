@@ -1,36 +1,71 @@
 BLUE="\[\033[38;2;0;0;255m\]"
-TEAL="\[\033[38;2;0;255;255m\]"
-YELLOW="\[\033[38;2;255;255;0m\]"
-RED="\[\033[38;2;255;0;0m\]"
-GREEN="\[\033[38;2;0;255;0m\]"
-PURPLE="\[\033[38;2;221;0;221m\]"
-ORANGE="\[\033[38;2;255;128;0m\]"
 PINK="\[\033[38;2;255;0;128m\]"
 WHITE="\[\033[0m\]"
 
+TEAL="\[\033[38;2;0;255;255m\]"
+DEVELOPMENT="$TEAL"
 
-# Set hostname color based on hostname value
+YELLOW="\[\033[38;2;255;255;0m\]"
+SERVER="$YELLOW"
+
+GREEN="\[\033[38;2;0;255;0m\]"
+MEDIA="$GREEN"
+
+ORANGE="\[\033[38;2;255;128;0m\]"
+VM="$ORANGE"
+
+RED="\[\033[38;2;255;0;0m\]"
+HYPERVISOR="$RED"
+
+PURPLE="\[\033[38;2;221;0;221m\]"
+KUBERNETES="$PURPLE"
+
+
 case "$(hostname)" in
-  ukko-ukonvasara)
-    HOST_COLOR=$TEAL
-    ;;
   ukko-development-pc)
-    HOST_COLOR=$TEAL
+    HOST_COLOR=$DEVELOPMENT
     ;;
-  ukko-server-1)
-    HOST_COLOR=$YELLOW
+  nfs-server)
+    HOST_COLOR=$VM
+    ;;
+  dns-server)
+    HOST_COLOR=$VM
     ;;
   ukko-server-2)
-    HOST_COLOR=$YELLOW
+    HOST_COLOR=$HYPERVISOR
+    ;;
+  proxmox-1)
+    HOST_COLOR=$HYPERVISOR
+    ;;
+  ukko-server-3)
+    HOST_COLOR=$HYPERVISOR
+    ;;
+  proxmox-2)
+    HOST_COLOR=$HYPERVISOR
     ;;
   ukko-media-client-1)
-    HOST_COLOR=$GREEN
+    HOST_COLOR=$MEDIA
     ;;
   ukko-media-client-2)
-    HOST_COLOR=$GREEN
+    HOST_COLOR=$MEDIA
     ;;
   ukko-media-client-3)
-    HOST_COLOR=$GREEN
+    HOST_COLOR=$MEDIA
+    ;;
+  kubernetes-control-plane-1)
+    HOST_COLOR=$KUBERNETES
+    ;;
+  kubernetes-worker-1)
+    HOST_COLOR=$KUBERNETES
+    ;;
+  kubernetes-worker-2)
+    HOST_COLOR=$KUBERNETES
+    ;;
+  kubernetes-worker-3)
+    HOST_COLOR=$KUBERNETES
+    ;;
+  kubernetes-worker-4)
+    HOST_COLOR=$KUBERNETES
     ;;
   *)
     HOST_COLOR=$WHITE
