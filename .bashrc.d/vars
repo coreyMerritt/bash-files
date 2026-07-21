@@ -1,0 +1,9 @@
+# Git Privacy
+export GIT_PRIVACY_SAFE_TIME_START="02:00:00"
+export GIT_PRIVACY_SAFE_TIME_END="17:00:00"
+export GIT_PRIVACY_RANDOM_COMMIT_TIME_MIN="00:01:00"
+export GIT_PRIVACY_RANDOM_COMMIT_TIME_MAX="00:10:00"
+
+# Misc
+export EDITOR="vim"
+export PROMPT_COMMAND='echo "$PWD" > "$HOME/.last_dir"'
