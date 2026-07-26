@@ -1,4 +1,4 @@
-alias ll='ls -Ahl --color "auto"'
+alias ll='ls -Ahl --color=auto'
 alias date-personal='date +"%Y-%m-%d %H:%M:%S.%3N %Z"'
 alias date-fs='date +"%Y-%m-%d_%H-%M-%S.%3N_%Z"'
 alias date-iso='date -Iseconds'
