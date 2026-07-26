@@ -21,5 +21,8 @@ for template_file_path in $template_files; do
   op inject \
     --force \
     --in-file "$template_file_path" \
-    --out-file "${HOME}/${clean_template_file_path}"
+    --out-file "${HOME}/${clean_template_file_path}" \
+    1>/dev/null
 done
+
+echo -e "\n\tsource ~/.bashrc\n"
