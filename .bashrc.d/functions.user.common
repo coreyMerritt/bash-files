@@ -1,3 +1,14 @@
+function fnDockerGetLatest() {
+  (
+    set -eEuo pipefail
+    image_name="$1"
+    docker pull --quiet "${image_name}:latest" > /dev/null
+    version="$(docker run --quiet --rm "${image_name}:latest" cat /etc/os-release | grep --color "VERSION_ID=")"
+    version="${version#VERSION_ID=}"
+    echo -e "\n\t${version}\n"
+  )
+}
+
 function fnKubePodMetrics() {
   local all_ns=false
   if [[ "$1" == "-A" ]]; then
