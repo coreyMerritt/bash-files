@@ -22,6 +22,9 @@ KUBERNETES="$PURPLE"
 
 
 case "$(hostname)" in
+  Ukonvasara)
+    HOST_COLOR=$KUBERNETES
+    ;;
   ukko-development-pc)
     HOST_COLOR=$DEVELOPMENT
     ;;
